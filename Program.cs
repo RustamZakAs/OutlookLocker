@@ -24,7 +24,7 @@ namespace OutlookLocker
             //else
             //    Process.Start(processName);
 
-
+            bool hide = false;
             CurrentId = Process.GetCurrentProcess().Id;
             Process[] pname = Process.GetProcessesByName("OutlookLocker");
             if (pname.Length > 1)
@@ -35,13 +35,13 @@ namespace OutlookLocker
             }
             else if (pname.Length == 1)
             {
-                
+                hide = true;
             }
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormLocker());
+            Application.Run(new FormLocker(hide));
         }
 
         public static int CurrentId { get; set; }

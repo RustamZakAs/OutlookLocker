@@ -46,7 +46,8 @@ namespace OutlookLocker
                 return;
             }
 
-            if (TIСryptographer.Cryptographer.Decrypt(values.FirstOrDefault(x => x.name == "Password").value) != this.tbOldPassword.Text)
+            string oldPass = values.FirstOrDefault(x => x.name == "Password").value;
+            if (oldPass != this.tbOldPassword.Text)
             {
                 MessageBox.Show(this, "Password is not correct!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
@@ -62,6 +63,7 @@ namespace OutlookLocker
             if (result)
             {
                 MessageBox.Show(this, "Password is changed!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
             }
             else
             {

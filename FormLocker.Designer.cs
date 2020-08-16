@@ -78,6 +78,7 @@
             this.tbPassword.Size = new System.Drawing.Size(192, 27);
             this.tbPassword.TabIndex = 2;
             this.tbPassword.UseSystemPasswordChar = true;
+            this.tbPassword.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.tbPassword_PreviewKeyDown);
             // 
             // pbPasswordShow
             // 
@@ -173,6 +174,7 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Outlook Locker";
+            this.Shown += new System.EventHandler(this.FormLocker_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pbLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPasswordShow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbParams)).EndInit();

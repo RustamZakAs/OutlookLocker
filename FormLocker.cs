@@ -10,10 +10,19 @@ namespace OutlookLocker
     public partial class FormLocker : Form
     {
         public bool IsPasswordShow { get; set; } = false;
-
-        public FormLocker()
+        public bool Hide { get; set; }
+        public FormLocker(bool hide)
         {
             InitializeComponent();
+            Hide = hide;
+        }
+
+        private void FormLocker_Shown(object sender, EventArgs e)
+        {
+            if (Hide)
+            {
+                OutlookLocker.WindowState.Hide("OutlookLocker");
+            }
         }
 
         private void pbPasswordShow_Click(object sender, EventArgs e)
@@ -32,6 +41,14 @@ namespace OutlookLocker
             }
         }
 
+        private void tbPassword_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnOk_Click(this.btnOk, null);
+            }
+        }
+
         private void btnOk_Click(object sender, EventArgs e)
         {
             List<SQLiteValue> values = SQLite.LoadParams();
@@ -42,7 +59,6 @@ namespace OutlookLocker
             }
 
             string pass = this.tbPassword.Text;
-
             if (pass.Length == 0 || pass.Trim().Length == 0)
             {
                 MessageBox.Show(this, "Password is empty!", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -50,9 +66,9 @@ namespace OutlookLocker
             }
 
             string password = values.FirstOrDefault(x => x.name == "Password").value;
-            if (password == pass)
+            try
             {
-                try
+                if (password == pass)
                 {
                     if (isOutlook())
                     {
@@ -61,14 +77,14 @@ namespace OutlookLocker
                         //this.Close();
                     }
                 }
-                catch (Exception e2)
-                {
-                    MessageBox.Show(e2.Message);
-                    return;
-                    throw;
-                }
             }
-            else
+            catch (Exception e2)
+            {
+                MessageBox.Show(e2.Message);
+                return;
+                throw;
+            }
+            finally
             {
                 this.tbPassword.Text = string.Empty;
             }
@@ -81,7 +97,7 @@ namespace OutlookLocker
             string path = (string)key.GetValue("Path");
             if (path != null)
             {
-                var process = System.Diagnostics.Process.Start(Path.Combine(path,"OUTLOOK.EXE"));
+                System.Diagnostics.Process process = System.Diagnostics.Process.Start(Path.Combine(path,"OUTLOOK.EXE"));
                 Program.OutlookId = process.Id;
                 return true;
             }
@@ -94,7 +110,8 @@ namespace OutlookLocker
 
         private void lblClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            OutlookLocker.WindowState.Hide("OutlookLocker");
+            //this.Close();
         }
 
         private void lblClose_MouseEnter(object sender, EventArgs e)
@@ -141,6 +158,18 @@ namespace OutlookLocker
             FormParams formParams = new FormParams();
             formParams.Owner = this;
             formParams.ShowDialog();
+        }
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int CS_NOCLOSE = 0x200;
+                CreateParams cp = base.CreateParams;
+                cp.ClassStyle |= CS_NOCLOSE;
+                cp.X = cp.X;
+                return cp;
+            }
         }
     }
 }

@@ -13,6 +13,7 @@ namespace OutlookLocker
         private static extern int ShowWindow(int hwnd, int nCmdShow);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1401:P/Invokes should not be visible", Justification = "<Pending>")]
         public static extern IntPtr SetFocus(HandleRef hWnd);
 
         //[DllImport("user32.dll")]
@@ -24,7 +25,8 @@ namespace OutlookLocker
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1401:P/Invokes should not be visible", Justification = "<Pending>")]
         public static extern IntPtr FindWindow(string className, string windowTitle);
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
