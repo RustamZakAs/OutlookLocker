@@ -9,17 +9,17 @@ namespace OutlookLocker
 {
     public partial class FormLocker : Form
     {
-        public bool IsPasswordShow { get; set; } = false;
-        public bool Hide { get; set; }
+        private bool IsPasswordShow { get; set; } = false;
+        private bool Hided { get; set; }
         public FormLocker(bool hide)
         {
             InitializeComponent();
-            Hide = hide;
+            Hided = hide;
         }
 
         private void FormLocker_Shown(object sender, EventArgs e)
         {
-            if (Hide)
+            if (Hided)
             {
                 OutlookLocker.WindowState.Hide("OutlookLocker");
             }
@@ -65,7 +65,7 @@ namespace OutlookLocker
                 return;
             }
 
-            string password = values.FirstOrDefault(x => x.name == "Password").value;
+            string password = TIСryptographer.Cryptographer.Decrypt(values.FirstOrDefault(x => x.name == "Password").value);
             try
             {
                 if (password == pass)

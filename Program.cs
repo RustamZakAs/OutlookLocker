@@ -35,7 +35,7 @@ namespace OutlookLocker
             }
             else if (pname.Length == 1)
             {
-                hide = true;
+                //hide = true;
             }
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
